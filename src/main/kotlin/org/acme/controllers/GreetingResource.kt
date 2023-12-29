@@ -14,7 +14,6 @@ class GreetingResource(
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     fun hello(): String {
-        println("GOWNO")
         println(repository.findById(1L))
         return "Hello from RESTEasy Reactive"
     }
