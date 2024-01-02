@@ -1,31 +1,43 @@
 package org.acme
 
+import com.github.tomakehurst.wiremock.client.WireMock
+import com.github.tomakehurst.wiremock.client.WireMock.aResponse
+import com.github.tomakehurst.wiremock.client.WireMock.get
+import com.github.tomakehurst.wiremock.client.WireMock.urlPathMatching
+import io.quarkiverse.wiremock.devservice.ConnectWireMock
 import io.quarkus.test.junit.QuarkusTest
 import io.restassured.RestAssured.given
-import org.acme.repositories.ExamplePostgresRepository
+import org.eclipse.microprofile.config.ConfigProvider
 import org.hamcrest.CoreMatchers.`is`
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 @QuarkusTest
+@ConnectWireMock
 class GreetingResourceTest {
 
-    private lateinit var repository: ExamplePostgresRepository
+//    private lateinit var repository: ExamplePostgresRepository
+    private lateinit var wiremock: WireMock
 
-    @BeforeEach
-    fun setUp() {
-        repository = ExamplePostgresRepository()
-    }
+//    @BeforeEach
+//    fun setUp() {
+//        repository = ExamplePostgresRepository()
+//    }
 
     @Test
     fun testHelloEndpoint() {
+        ConfigProvider.getConfig().configSources.forEach {
+            it.properties.forEach { prop -> println(prop) }
+        }
 
-        println(repository.findAll().list().size)
+        wiremock.register(get(urlPathMatching("/example-client"))
+            .willReturn(aResponse().withStatus(200).withBody("Hello from ExampleClient")))
+
+        wiremock.allStubMappings().mappings.forEach { println(it) }
 
         given()
-          .`when`().get("/hello")
-          .then()
-             .statusCode(200)
-             .body(`is`("Hello from RESTEasy Reactive"))
+            .`when`().get("/hello")
+            .then()
+            .statusCode(200)
+            .body(`is`("Hello from RESTEasy Reactive"))
     }
 }
