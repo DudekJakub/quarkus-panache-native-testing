@@ -15,13 +15,7 @@ import org.junit.jupiter.api.Test
 @ConnectWireMock
 class GreetingResourceTest {
 
-//    private lateinit var repository: ExamplePostgresRepository
     private lateinit var wiremock: WireMock
-
-//    @BeforeEach
-//    fun setUp() {
-//        repository = ExamplePostgresRepository()
-//    }
 
     @Test
     fun testHelloEndpoint() {
@@ -29,10 +23,17 @@ class GreetingResourceTest {
             it.properties.forEach { prop -> println(prop) }
         }
 
-        wiremock.register(get(urlPathMatching("/example-client"))
-            .willReturn(aResponse().withStatus(200).withBody("Hello from ExampleClient")))
+        wiremock.register(
+            get(urlPathMatching("/example-client"))
+                .willReturn(aResponse().withStatus(200).withBody("Hello from ExampleClient"))
+        )
 
         wiremock.allStubMappings().mappings.forEach { println(it) }
+
+        given()
+            .`when`()[String.format("http://localhost:%d/example-client", 8089)]
+            .then().statusCode(200)
+            .body(`is`("Hello from ExampleClient"))
 
         given()
             .`when`().get("/hello")
