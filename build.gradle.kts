@@ -3,7 +3,6 @@ plugins {
     kotlin("plugin.allopen") version "1.9.21"
     id("io.quarkus")
     id("org.jetbrains.kotlin.plugin.noarg") version "1.9.10"
-//    id("org.kordamp.gradle.jandex") version "1.1.0"
 }
 
 repositories {
@@ -18,24 +17,17 @@ val quarkusPlatformVersion: String by project
 dependencies {
     implementation(enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}"))
     implementation(enforcedPlatform("${quarkusPlatformGroupId}:quarkus-amazon-services-bom:${quarkusPlatformVersion}"))
-    implementation("io.quarkiverse.amazonservices:quarkus-amazon-dynamodb-enhanced")
-    implementation("io.quarkus:quarkus-flyway")
     implementation("io.quarkus:quarkus-resteasy-reactive-jackson")
-    implementation("io.quarkus:quarkus-hibernate-orm-panache-kotlin")
     implementation("io.quarkus:quarkus-kotlin")
     implementation("io.quarkus:quarkus-reactive-pg-client")
-    implementation("io.quarkus:quarkus-jdbc-postgresql")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("io.quarkus:quarkus-arc")
-    implementation("io.quarkus:quarkus-hibernate-orm")
     implementation("io.quarkus:quarkus-resteasy-reactive")
     implementation("io.quarkus:quarkus-rest-client-reactive")
     implementation("io.quarkus:quarkus-rest-client-reactive-jackson")
     testImplementation("io.quarkus:quarkus-junit5")
     testImplementation("io.rest-assured:rest-assured")
     testImplementation("io.quarkiverse.wiremock:quarkus-wiremock-test:1.0.0")
-    testImplementation("org.testcontainers:testcontainers:1.16.2")
-    testImplementation("org.testcontainers:postgresql:1.16.2")
 }
 
 group = "org.acme"
