@@ -6,10 +6,12 @@ import jakarta.ws.rs.Produces
 import jakarta.ws.rs.core.MediaType
 import org.acme.client.ExampleClient
 import org.acme.client.ExampleClient2
+import org.acme.repositories.ExamplePostgresRepository
 import org.eclipse.microprofile.rest.client.inject.RestClient
 
 @Path("/hello")
 class GreetingResource(
+    private val repository: ExamplePostgresRepository,
     @RestClient private val client: ExampleClient,
     @RestClient private val client2: ExampleClient2
 ) {
@@ -24,6 +26,10 @@ class GreetingResource(
         println("\nTEST REST CLIENT 2 WIREMOCK START")
         println(client2.getSomethingElse())
         println("TEST REST CLIENT 2 WIREMOCK END\n")
+
+        println("TEST REPOSITORY START")
+        println(repository.findById(1L))
+        println("TEST REPOSITORY END\n")
 
         return "Hello from RESTEasy Reactive"
     }

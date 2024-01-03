@@ -15,7 +15,13 @@ import org.junit.jupiter.api.Test
 @ConnectWireMock
 class GreetingResourceTest {
 
+//    private lateinit var repository: ExamplePostgresRepository
     private lateinit var wiremock: WireMock
+
+//    @BeforeEach
+//    fun setUp() {
+//        repository = ExamplePostgresRepository()
+//    }
 
     @Test
     fun testHelloEndpoint() {
