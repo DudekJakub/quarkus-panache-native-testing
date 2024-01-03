@@ -28,12 +28,20 @@ class GreetingResourceTest {
                 .willReturn(aResponse().withStatus(200).withBody("Hello from ExampleClient"))
         )
 
-        wiremock.allStubMappings().mappings.forEach { println(it) }
+        wiremock.register(
+            get(urlPathMatching("/example-client2"))
+                .willReturn(aResponse().withStatus(200).withBody("Hello from ExampleClient2"))
+        )
 
         given()
             .`when`()[String.format("http://localhost:%d/example-client", 8089)]
             .then().statusCode(200)
             .body(`is`("Hello from ExampleClient"))
+
+        given()
+            .`when`()[String.format("http://localhost:%d/example-client2", 8089)]
+            .then().statusCode(200)
+            .body(`is`("Hello from ExampleClient2"))
 
         given()
             .`when`().get("/hello")
