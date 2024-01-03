@@ -18,6 +18,7 @@ dependencies {
     implementation(enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}"))
     implementation(enforcedPlatform("${quarkusPlatformGroupId}:quarkus-amazon-services-bom:${quarkusPlatformVersion}"))
     implementation("io.quarkiverse.amazonservices:quarkus-amazon-dynamodb-enhanced")
+    implementation("software.amazon.awssdk:url-connection-client")
     implementation("io.quarkus:quarkus-flyway")
     implementation("io.quarkus:quarkus-resteasy-reactive-jackson")
     implementation("io.quarkus:quarkus-hibernate-orm-panache-kotlin")
@@ -33,6 +34,9 @@ dependencies {
     testImplementation("io.quarkus:quarkus-junit5")
     testImplementation("io.rest-assured:rest-assured")
     testImplementation("io.quarkiverse.wiremock:quarkus-wiremock-test:1.0.0")
+    testImplementation("org.testcontainers:testcontainers:1.17.6")
+    testImplementation("org.testcontainers:localstack:1.17.6")
+    testImplementation("org.testcontainers:junit-jupiter:1.17.6")
 }
 
 group = "org.acme"
@@ -55,6 +59,7 @@ allOpen {
 noArg {
     annotation("jakarta.persistence.Entity")
     annotation("jakarta.persistence.Embeddable")
+    annotation("software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean")
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {

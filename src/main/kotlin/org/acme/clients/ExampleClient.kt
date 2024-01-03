@@ -1,4 +1,4 @@
-package org.acme.client
+package org.acme.clients
 
 import jakarta.inject.Singleton
 import jakarta.ws.rs.GET

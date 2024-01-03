@@ -28,7 +28,7 @@ import jakarta.persistence.SequenceGenerator
  * }
  */
 @Entity
-class MyKotlinEntity(
+class MyPostgresEntity(
 
     @Column
     var firstname: String,

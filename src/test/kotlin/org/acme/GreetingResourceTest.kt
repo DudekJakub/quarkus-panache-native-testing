@@ -1,54 +1,23 @@
 package org.acme
 
-import com.github.tomakehurst.wiremock.client.WireMock
-import com.github.tomakehurst.wiremock.client.WireMock.aResponse
-import com.github.tomakehurst.wiremock.client.WireMock.get
-import com.github.tomakehurst.wiremock.client.WireMock.urlPathMatching
-import io.quarkiverse.wiremock.devservice.ConnectWireMock
+import io.quarkus.test.common.QuarkusTestResource
 import io.quarkus.test.junit.QuarkusTest
 import io.restassured.RestAssured.given
-import org.eclipse.microprofile.config.ConfigProvider
 import org.hamcrest.CoreMatchers.`is`
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 @QuarkusTest
-@ConnectWireMock
+@QuarkusTestResource(DynamoDbTestResource::class)
 class GreetingResourceTest {
 
-//    private lateinit var repository: ExamplePostgresRepository
-    private lateinit var wiremock: WireMock
-
-//    @BeforeEach
-//    fun setUp() {
-//        repository = ExamplePostgresRepository()
-//    }
+    @BeforeEach
+    fun setUp() {
+        DynamoDbTestSetUpper().setUp()
+    }
 
     @Test
     fun testHelloEndpoint() {
-        ConfigProvider.getConfig().configSources.forEach {
-            it.properties.forEach { prop -> println(prop) }
-        }
-
-        wiremock.register(
-            get(urlPathMatching("/example-client"))
-                .willReturn(aResponse().withStatus(200).withBody("Hello from ExampleClient"))
-        )
-
-        wiremock.register(
-            get(urlPathMatching("/example-client2"))
-                .willReturn(aResponse().withStatus(200).withBody("Hello from ExampleClient2"))
-        )
-
-        given()
-            .`when`()[String.format("http://localhost:%d/example-client", 8089)]
-            .then().statusCode(200)
-            .body(`is`("Hello from ExampleClient"))
-
-        given()
-            .`when`()[String.format("http://localhost:%d/example-client2", 8089)]
-            .then().statusCode(200)
-            .body(`is`("Hello from ExampleClient2"))
-
         given()
             .`when`().get("/hello")
             .then()

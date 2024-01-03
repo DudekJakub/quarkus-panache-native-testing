@@ -4,32 +4,26 @@ import jakarta.ws.rs.GET
 import jakarta.ws.rs.Path
 import jakarta.ws.rs.Produces
 import jakarta.ws.rs.core.MediaType
-import org.acme.client.ExampleClient
-import org.acme.client.ExampleClient2
-import org.acme.repositories.ExamplePostgresRepository
-import org.eclipse.microprofile.rest.client.inject.RestClient
+import org.acme.models.MyDynamoEntity
+import org.acme.repositories.ExampleDynamoRepository
 
 @Path("/hello")
 class GreetingResource(
-    private val repository: ExamplePostgresRepository,
-    @RestClient private val client: ExampleClient,
-    @RestClient private val client2: ExampleClient2
+    private val dynamoRepository: ExampleDynamoRepository
 ) {
 
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     fun hello(): String {
-        println("\nTEST REST CLIENT WIREMOCK START")
-        println(client.getSomething())
-        println("TEST REST CLIENT WIREMOCK END\n")
+        println("TEST DYNAMO REPOSITORY SAVE START")
+        println(dynamoRepository.saveEntity(
+            MyDynamoEntity("1", "Jackob", "Dudere", "SomeSortKeyValue")
+        ))
+        println("TEST DYNAMO REPOSITORY SAVE END\n")
 
-        println("\nTEST REST CLIENT 2 WIREMOCK START")
-        println(client2.getSomethingElse())
-        println("TEST REST CLIENT 2 WIREMOCK END\n")
-
-        println("TEST REPOSITORY START")
-        println(repository.findById(1L))
-        println("TEST REPOSITORY END\n")
+        println("TEST DYNAMO REPOSITORY FIND_BY_ID START")
+        println(dynamoRepository.findById("1", "SomeSortKeyValue"))
+        println("TEST DYNAMO REPOSITORY FIND_BY_ID END\n")
 
         return "Hello from RESTEasy Reactive"
     }
