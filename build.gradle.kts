@@ -34,9 +34,6 @@ dependencies {
     testImplementation("io.quarkus:quarkus-junit5")
     testImplementation("io.rest-assured:rest-assured")
     testImplementation("io.quarkiverse.wiremock:quarkus-wiremock-test:1.0.0")
-    testImplementation("org.testcontainers:testcontainers:1.17.6")
-    testImplementation("org.testcontainers:localstack:1.17.6")
-    testImplementation("org.testcontainers:junit-jupiter:1.17.6")
 }
 
 group = "org.acme"
